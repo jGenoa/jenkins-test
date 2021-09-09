@@ -22,7 +22,8 @@ node {
     }
     stage('Run pipeline copy') {
         build job: 'Copy pipeline 1', parameters: [
-            string(name: 'git tag', value: "val-2")
+            string(name: 'git tag', value: "val-2"),
+            choice(name: 'value', value: "val-2")
 //             choice('git tag': 'TAG-3', value:'val-2')
         ], wait: true
     }
