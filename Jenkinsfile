@@ -20,6 +20,9 @@ node {
 //         }
         echo 'Build'
     }
+    stage('Run pipeline copy') {
+        build job: 'Copy pipeline 1', parameters: [string('git tag': 'TAG-3', value:'val-2')], wait: true
+    }
     stage('Results') {
 //         junit '**/target/surefire-reports/TEST-*.xml'
 //         archiveArtifacts 'target/*.jar'
