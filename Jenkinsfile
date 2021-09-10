@@ -1,3 +1,62 @@
+// properties([
+//     parameters([
+//         [$class: 'CascadeChoiceParameter', 
+//             choiceType: 'PT_SINGLE_SELECT',
+//             description: 'Select a choice',
+//             filterLength: 1,
+//             filterable: true,
+//             name: 'choice1',
+//             referencedParameters: 'ENVIRONMENT',
+//             script: [$class: 'GroovyScript',
+//                 fallbackScript: [
+//                     classpath: [], 
+//                     sandbox: true, 
+//                     script: 'return ["ERROR"]'
+//                 ],
+//                 script: [
+//                     classpath: [], 
+//                     sandbox: true, 
+//                     script: """
+//                         if (ENVIRONMENT == 'lab') { 
+//                             return['aaa','bbb']
+//                         }
+//                         else {
+//                             return['ccc', 'ddd']
+//                         }
+//                     """.stripIndent()
+//                 ]
+//             ]
+//         ]
+//     ])
+// ])
+
+properties([
+  parameters([
+    [
+      $class: 'ChoiceParameter',
+      choiceType: 'PT_SINGLE_SELECT',
+      name: 'Environment',
+      script: [
+        $class: 'ScriptlerScript',
+        scriptlerScriptId:'Environments.groovy'
+      ]
+    ],
+    [
+      $class: 'CascadeChoiceParameter',
+      choiceType: 'PT_SINGLE_SELECT',
+      name: 'Host',
+      referencedParameters: 'Environment',
+      script: [
+        $class: 'ScriptlerScript',
+        scriptlerScriptId:'HostsInEnv.groovy',
+        parameters: [
+          [name:'Environment', value: '$Environment']
+        ]
+      ]
+   ]
+ ])
+])
+
 pipeline {
     agent any
 
@@ -9,7 +68,8 @@ pipeline {
         }
         stage('Test') {
             steps {
-                echo 'Testing..'
+                echo 'Select pipelines to run..'
+                
             }
         }
         stage('Run pipeline copy') {
