@@ -62,40 +62,42 @@
 //     booleanParam(name: 'executeTests', defaultValue: true, description: '')
 // }
 
-properties([
-    parameters([
-        [
-        $class: 'ChoiceParameter',
-        choiceType: 'PT_SINGLE_SELECT',
-        name: 'Environment',
-        script: [
-            $class: 'ScriptlerScript',
-            scriptlerScriptId:'Environments.groovy'
-        ]
-        ],
-        [
-        $class: 'CascadeChoiceParameter',
-        choiceType: 'PT_SINGLE_SELECT',
-        name: 'Host',
-        referencedParameters: 'Environment',
-        script: [
-            $class: 'ScriptlerScript',
-            scriptlerScriptId:'HostsInEnv.groovy',
-            parameters: [
-            [name:'Environment', value: '$Environment']
-            ]
-        ]
-    ]
-    ])
-])
+// properties([
+//     parameters([
+//         [
+//         $class: 'ChoiceParameter',
+//         choiceType: 'PT_SINGLE_SELECT',
+//         name: 'Environment',
+//         script: [
+//             $class: 'ScriptlerScript',
+//             scriptlerScriptId:'Environments.groovy'
+//         ]
+//         ],
+//         [
+//         $class: 'CascadeChoiceParameter',
+//         choiceType: 'PT_SINGLE_SELECT',
+//         name: 'Host',
+//         referencedParameters: 'Environment',
+//         script: [
+//             $class: 'ScriptlerScript',
+//             scriptlerScriptId:'HostsInEnv.groovy',
+//             parameters: [
+//             [name:'Environment', value: '$Environment']
+//             ]
+//         ]
+//     ]
+//     ])
+// ])
 
 pipeline {
     agent any
 
-    // parameters {
-    //     choice(name: 'VERSION', choices: ['1.1.0', '1.2.0', '1.3.0'], description: '')
-    //     booleanParam(name: 'executeTests', defaultValue: true, description: '')
-    // }
+    parameters {
+        // choice(name: 'VERSION', choices: ['1.1.0', '1.2.0', '1.3.0'], description: '')
+        booleanParam(name: 'execute pipeline 1', defaultValue: true, description: '')
+        booleanParam(name: 'execute pipeline 2', defaultValue: true, description: 'fdas fdas fas dfa')
+        booleanParam(name: 'execute pipeline 3', defaultValue: true, description: 'jhgj gfjhfghjghf')
+    }
 
     
 
