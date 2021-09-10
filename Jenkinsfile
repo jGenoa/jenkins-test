@@ -15,7 +15,11 @@ pipeline {
         stage('Run pipeline copy') {
             parallel {
                 stage('run-inner-pipeline-1') {
+                    when {
+                        expression { params.RUN_PIPELINE_1 }
+                    }
                     steps {
+                        input message: 'Should I run pipeline 1?', ok: 'Run pipeline 1', parameters: [choice(choices: ['TAG-1'], name: 'Select tag')], submitterParameter: 'should_run_pipeline_one'
                         build(job: 'inner-pipeline-1', parameters: [
                             string(name: 'Select git tag', value: "TAG-3"),
                             string(name: 'Select value', value: "val-1"),
@@ -23,6 +27,9 @@ pipeline {
                     }
                 }
                 stage('run-inner-pipeline-2') {
+                    when {
+                        expression { params.RUN_PIPELINE_2 }
+                    }
                     steps {
                         build(job: 'inner-pipeline-2', parameters: [
                             string(name: 'Select git tag', value: "TAG-2"),
@@ -31,6 +38,9 @@ pipeline {
                     }
                 }
                 stage('run-inner-pipeline-3') {
+                    when {
+                        expression { params.RUN_PIPELINE_3 }
+                    }
                     steps {
                         build(job: 'inner-pipeline-3', parameters: [
                             string(name: 'Select git tag', value: "TAG-1"),
@@ -47,68 +57,6 @@ pipeline {
         }
     }
 }
-// pipeline {
-//     agent none
-//     stages {
-//         stage('Preparation') { // for display purposes
-//             // Get some code from a GitHub repository
-//     //         git 'https://github.com/jglick/simple-maven-project-with-tests.git'
-//             // Get the Maven tool.
-//             // ** NOTE: This 'M3' Maven tool must be configured
-//             // **       in the global configuration.
-//     //         mvnHome = tool 'M3'
-//             echo 'Preparation'
-//         }
-//         stage('Build') {
-//             // Run the maven build
-//     //         withEnv(["MVN_HOME=$mvnHome"]) { 
-//     //             if (isUnix()) {
-//     //                 sh '"$MVN_HOME/bin/mvn" -Dmaven.test.failure.ignore clean package'
-//     //             } else {
-//     //                 bat(/"%MVN_HOME%\bin\mvn" -Dmaven.test.failure.ignore clean package/)
-//     //             }
-//     //         }
-//             echo 'Build'
-//         }
-//         stage('Run pipeline copy') {
-//             build job: 'inner-pipeline-1', parameters: [
-//                 string(name: 'Select git tag', value: "TAG-3"),
-//                 string(name: 'Select value', value: "val-2"),
-//     //             choice('git tag': 'TAG-3', value:'val-2')
-//             ], wait: true
-//         }
-//         stage('Run in pararell') {
-//             parallel {
-//                 stage('run-inner-pipeline-1') {
-//                     // steps {
-//                     //     build job: 'inner-pipeline-1', parameters: [
-//                     //         string(name: 'Select git tag', value: "TAG-3"),
-//                     //         string(name: 'Select value', value: "val-1"),
-//                     //     ], wait: true
-//                     // }
-//                 }
-//                 stage('run-inner-pipeline-2') {
-//                     // steps {
-//                     //     build job: 'inner-pipeline-2', parameters: [
-//                     //         string(name: 'Select git tag', value: "TAG-2"),
-//                     //         string(name: 'Select value', value: "val-2"),
-//                     //     ], wait: true
-//                     // }
-//                 }
-//                 stage('run-inner-pipeline-3') {
-//                     // steps {
-//                     //     build job: 'inner-pipeline-3', parameters: [
-//                     //         string(name: 'Select git tag', value: "TAG-1"),
-//                     //         string(name: 'Select value', value: "val-3"),
-//                     //     ], wait: true
-//                     // }
-//                 }
-//             }
-//         }
-//         stage('Results') {
-//     //         junit '**/target/surefire-reports/TEST-*.xml'
-//     //         archiveArtifacts 'target/*.jar'
-//             echo 'Results'
-//         }
-//     }
-// }
+
+
+// input message: '', ok: 'Run pipeline 1', parameters: [choice(choices: ['TAG-1'], name: 'Select tag')]
