@@ -19,7 +19,7 @@ pipeline {
                         build(job: 'inner-pipeline-1', parameters: [
                             string(name: 'Select git tag', value: "TAG-3"),
                             string(name: 'Select value', value: "val-1"),
-                        ], wait: true)
+                        ])
                     }
                 }
                 stage('run-inner-pipeline-2') {
@@ -27,7 +27,7 @@ pipeline {
                         build(job: 'inner-pipeline-2', parameters: [
                             string(name: 'Select git tag', value: "TAG-2"),
                             string(name: 'Select value', value: "val-2"),
-                        ], wait: true)
+                        ])
                     }
                 }
                 stage('run-inner-pipeline-3') {
@@ -35,7 +35,7 @@ pipeline {
                         build(job: 'inner-pipeline-3', parameters: [
                             string(name: 'Select git tag', value: "TAG-1"),
                             string(name: 'Select value', value: "val-3"),
-                        ], wait: true)
+                        ])
                     }
                 }
             }
