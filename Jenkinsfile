@@ -27,6 +27,34 @@ node {
 //             choice('git tag': 'TAG-3', value:'val-2')
         ], wait: true
     }
+    stage('Run in pararell') {
+        parallel {
+            stage('run-inner-pipeline-1') {
+                steps {
+                    build job: 'inner-pipeline-1', parameters: [
+                        string(name: 'Select git tag', value: "TAG-3"),
+                        string(name: 'Select value', value: "val-1"),
+                    ], wait: true
+                }
+            }
+            stage('run-inner-pipeline-2') {
+                steps {
+                    build job: 'inner-pipeline-2', parameters: [
+                        string(name: 'Select git tag', value: "TAG-2"),
+                        string(name: 'Select value', value: "val-2"),
+                    ], wait: true
+                }
+            }
+            stage('run-inner-pipeline-3') {
+                steps {
+                    build job: 'inner-pipeline-3', parameters: [
+                        string(name: 'Select git tag', value: "TAG-1"),
+                        string(name: 'Select value', value: "val-3"),
+                    ], wait: true
+                }
+            }
+        }
+    }
     stage('Results') {
 //         junit '**/target/surefire-reports/TEST-*.xml'
 //         archiveArtifacts 'target/*.jar'
