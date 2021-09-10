@@ -17,9 +17,7 @@ pipeline {
                 build(job: 'inner-pipeline-1', parameters: [
                     string(name: 'Select git tag', value: "TAG-3"),
                     string(name: 'Select value', value: "val-2"),
-                ]
-                // , wait: true
-                )
+                ], wait: true)
             }
         }
         stage('Deploy') {
