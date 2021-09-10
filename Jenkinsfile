@@ -21,7 +21,7 @@ node {
         echo 'Build'
     }
     stage('Run pipeline copy') {
-        build job: 'Copy pipeline 1', parameters: [
+        build job: 'inner-pipeline-1', parameters: [
             string(name: 'Select git tag', value: "TAG-3"),
             string(name: 'Select value', value: "val-2"),
 //             choice('git tag': 'TAG-3', value:'val-2')
