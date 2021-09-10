@@ -94,9 +94,9 @@ pipeline {
 
     parameters {
         // choice(name: 'VERSION', choices: ['1.1.0', '1.2.0', '1.3.0'], description: '')
-        booleanParam(name: 'execute pipeline 1', defaultValue: true, description: '')
-        booleanParam(name: 'execute pipeline 2', defaultValue: true, description: 'fdas fdas fas dfa')
-        booleanParam(name: 'execute pipeline 3', defaultValue: true, description: 'jhgj gfjhfghjghf')
+        booleanParam(name: 'RUN_PIPELINE_1', defaultValue: true, description: '')
+        booleanParam(name: 'RUN_PIPELINE_2', defaultValue: true, description: '')
+        booleanParam(name: 'RUN_PIPELINE_3', defaultValue: true, description: '')
     }
 
     
@@ -116,9 +116,9 @@ pipeline {
         stage('Run pipeline copy') {
             parallel {
                 stage('run-inner-pipeline-1') {
-                    // when {
-                    //     expression { params.RUN_PIPELINE_1 }
-                    // }
+                    when {
+                        expression { params.RUN_PIPELINE_1 }
+                    }
                     steps {
                         input message: 'Should I run pipeline 1?', ok: 'Run pipeline 1', parameters: [choice(choices: ['TAG-1'], name: 'Select tag')], submitterParameter: 'should_run_pipeline_one'
                         build(job: 'inner-pipeline-1', parameters: [
@@ -128,9 +128,9 @@ pipeline {
                     }
                 }
                 stage('run-inner-pipeline-2') {
-                    // when {
-                    //     expression { params.RUN_PIPELINE_2 }
-                    // }
+                    when {
+                        expression { params.RUN_PIPELINE_2 }
+                    }
                     steps {
                         build(job: 'inner-pipeline-2', parameters: [
                             string(name: 'Select git tag', value: "TAG-2"),
@@ -139,9 +139,9 @@ pipeline {
                     }
                 }
                 stage('run-inner-pipeline-3') {
-                    // when {
-                    //     expression { params.RUN_PIPELINE_3 }
-                    // }
+                    when {
+                        expression { params.RUN_PIPELINE_3 }
+                    }
                     steps {
                         build(job: 'inner-pipeline-3', parameters: [
                             string(name: 'Select git tag', value: "TAG-1"),
